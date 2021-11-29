@@ -1,13 +1,15 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <bullet.h>
+#include <enemy.h>
 
 bool gameOver;
 bool fire;
 bool fireLastState;
 bool enemyB;
-const int width = 20;
-const int height = 10;
+const int width = 40;
+const int height = 20;
 int x, y, fX, fY, eX, eY, score;
 char enemyC = 'V';
 unsigned long clock = 0;
@@ -52,6 +54,7 @@ void draw()
                 // Prints enemy
 				else if (i == eY && j == eX && enemyB == true)
 					std::cout << enemyC;
+                
                 // Prints the "bullet"
 				else if (i == fY && j == fX)
 					std::cout << ".";
@@ -64,32 +67,39 @@ void draw()
 		}
 		std::cout << "\n";
 	}
+    // Bottom Border
 	for (int i = 0; i < width; i++)
 	{
 		std::cout << "#";
 	}
+    // Score printed at the start of every "iteration"
 	std::cout << "\n\nScore: " << score << "\n";
 }
 
 void input()
 {
+    // _kbhit - keyboard hit - returns 0 only if key is in keyboard buffer.
 	if (_kbhit())
 	{
+        // Get the char from the keyboard.
 		switch (_getch())
 		{
+        // Moves left (update player x)
 		case 'a':
 			if (x > 1)
 			{
 				x -= 1;
 			}
 			break;
+        // Moves right
 		case 'd':
 			if (x < width - 2)
 			{
 				x += 1;
 			}
 			break;
-		case 'j':
+        // "Fires" - 
+		case 'f':
 		{
 			{
 				fire = true;
@@ -117,7 +127,7 @@ void logic()
 	{
 		score += 10;
 		enemyB = false;
-		enemyC = 'v';
+		// enemyC = "V";
 	}
 
 	//enemy
@@ -144,7 +154,7 @@ int main()
 		draw();
 		input();
 		logic();
-		Sleep(10);
+		Sleep(100);
 		clock++;
 	}
 }
